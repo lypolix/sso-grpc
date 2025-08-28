@@ -13,7 +13,7 @@ import (
 
 type App struct {
 	GRPCSrv *grpcapp.App
-	
+
 }
 
 func New (log *slog.Logger, grpcPort int, storagePath string, tokenTTL time.Duration) * App {

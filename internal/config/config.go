@@ -26,6 +26,16 @@ func MustLoad() *Config {
 		panic("empty config path")
 	}
 
+	return MustLoadByPath(path)
+}
+
+
+func MustLoadByPath(configPath string) *Config {
+	path := fetchConfigPath()
+	if path == "" {
+		panic("empty config path")
+	}
+
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		panic("config file does not exist:" + path)
 	}
@@ -38,6 +48,7 @@ func MustLoad() *Config {
 
 	return &cfg
 }
+
 
 func fetchConfigPath() string {
 	var res string
