@@ -1,0 +1,6 @@
+env: "local"
+storage_path: "./storage/test.db" 
+token_ttl: "1h"
+grpc: 
+  port: 4890
+  timeout: 5s 

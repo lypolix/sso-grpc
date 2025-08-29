@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -16,6 +17,8 @@ const (
 )
 
 func main() {
+
+	flag.Parse()
 	cfg := config.MustLoad()
 
 	log := setupLogger(cfg.Env)

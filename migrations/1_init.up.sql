@@ -1,15 +1,15 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    id        SERIAL PRIMARY KEY,
+    id        INTEGER PRIMARY KEY AUTOINCREMENT, 
     email     TEXT NOT NULL UNIQUE,
-    pass_hash BYTEA NOT NULL
+    pass_hash BLOB NOT NULL                      
 );
 
 CREATE INDEX IF NOT EXISTS idx_email ON users (email);
 
 CREATE TABLE IF NOT EXISTS apps
 (
-    id     SERIAL PRIMARY KEY,
+    id     SERIAL PRIMARY KEY AUTOINCREMENT,
     name   TEXT NOT NULL UNIQUE,
     secret TEXT NOT NULL UNIQUE
 );
