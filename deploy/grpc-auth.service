@@ -1,0 +1,14 @@
+[Unit]
+Description=gRPC Auth Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/Polina/sso-auth
+ExecStart=/home/Polina/sso-auth/sso-auth --config=/home/Polina/sso-auth/config/local.yaml  
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

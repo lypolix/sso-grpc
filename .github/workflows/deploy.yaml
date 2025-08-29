@@ -1,0 +1,38 @@
+name: Local Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to deploy'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.tag }}
+      
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.24
+      
+      - name: Build and run locally
+        run: |
+    
+          go mod download
+      
+          go build -o grpc-auth ./cmd/sso-auth
+          go build -o migrator ./cmd/migrator
+         
+          sed -i 's/SERIAL PRIMARY KEY AUTOINCREMENT/INTEGER PRIMARY KEY AUTOINCREMENT/g' migrations/*.sql
+          sed -i 's/SERIAL PRIMARY KEY/INTEGER PRIMARY KEY/g' migrations/*.sql
+         
+          ./migrator --storage-path=./storage/sso.db --migrations-path=./migrations
+          
+          ./grpc-auth --config=./config/local.yaml
