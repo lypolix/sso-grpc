@@ -22,17 +22,27 @@ jobs:
         with:
           go-version: 1.24
       
-      - name: Build and run locally
+      - name: Build and test locally
         run: |
-    
           go mod download
-      
-          go build -o grpc-auth ./cmd/sso-auth
+          
+          go build -o sso-auth ./cmd/sso-auth  
           go build -o migrator ./cmd/migrator
-         
+          
           sed -i 's/SERIAL PRIMARY KEY AUTOINCREMENT/INTEGER PRIMARY KEY AUTOINCREMENT/g' migrations/*.sql
           sed -i 's/SERIAL PRIMARY KEY/INTEGER PRIMARY KEY/g' migrations/*.sql
-         
+          
           ./migrator --storage-path=./storage/sso.db --migrations-path=./migrations
           
-          ./grpc-auth --config=./config/local.yaml
+          ./sso-auth --config=./config/local.yaml &
+          SERVER_PID=$!
+          
+          sleep 5
+          
+          if kill -0 $SERVER_PID 2>/dev/null; then
+            echo "Server started successfully on port 4890"
+            kill $SERVER_PID
+          else
+            echo "Server failed to start"
+            exit 1
+          fi
