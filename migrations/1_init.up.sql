@@ -9,7 +9,7 @@ CREATE INDEX IF NOT EXISTS idx_email ON users (email);
 
 CREATE TABLE IF NOT EXISTS apps
 (
-    id     SERIAL PRIMARY KEY AUTOINCREMENT,
+    id     SERIAL PRIMARY KEY,
     name   TEXT NOT NULL UNIQUE,
     secret TEXT NOT NULL UNIQUE
 );
